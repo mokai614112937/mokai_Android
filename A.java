@@ -1,3 +1,2 @@
-nihao,androidjk
-dasdqwjasklda
-asasdqwqd
+println("hello git")
+println("nihao,android")

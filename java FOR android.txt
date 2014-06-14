@@ -137,4 +137,17 @@
                                                 --.$ git merge "merge branch1 to master" HEAD   branch1
                                            --：合并冲突（在两个分支下对同一文件的同一个地方修改了内容）手动修改vim
                                 --.标定版本：$ git tag -a ver1.0 -m "my version1.0" （把当前所有文件标记问ver1.0）
-                                
+   SVN 与 Git 区别：
+                --.概念和特性：
+                        --. SVN                                                               | Git
+                             C/S 结构                                                       | 分布式
+                             客户端工作区和本地不在同一个文件         | 客户端工作区和本地仓库在同一个文件
+                             SVN 不方便离线工作                                    | Git可以一直离线操作
+                             SVN速度慢                                                    | Git速度快（快照模式）
+                --.操作上：
+                        --. SVN                                 | Git
+                             checkout                          | clone、pull、fetch   
+                             svn branch 建立新目录   | Git branch 不是
+                             update                             | reset checkout
+                             commit                            | push
+                             delete                              | rm          

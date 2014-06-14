@@ -1,0 +1,140 @@
+一.java基础
+1.instanceof 校验对象类型（控件元素view（Button、TextView、CheckBox））
+2.Array（数据集合、ListView显示 ）
+3.Reflection反射（通过配置文件实例化）
+4.Iteration迭代器
+5.Cursor数据游标（操作数据库）
+6.内部类（成员内部类、局部内部类、静态内部类、匿名内部类）
+7.javadoc（生成javadoc模板）
+8.String（android中的string.xml文件）
+9.date&time
+10.泛型（集合、数据操作）
+11.多线程（异步操作 java(继承thread、实现runnable) 、android（Handler、AsyncTask））
+12.http网络编程（HttpClient）
+13.IO编程（读写操作）
+
+二.eclipse使用技巧
+1.工作区间切换&配置导出导入
+2.显示行数
+3.代码提示（.abcdefghijklmnopqrstuvwxyz/(,）
+4.快速注释（行注释Ctrl + / ）（快注释 Ctrl+Shift +/） 
+5.窗口切换（Ctrl+M、Ctrl+F6）
+6.快速大小写求切换（大写：Ctrl+ Shift  + x 小写：Ctrl+ Shift +y）
+7.快速回到上次编辑处，查看回退（Ctrl+Q）
+8.代码重构(Refactor)
+        --.Rename （Ctrl + Shift + R）
+        --.字段方法向父类或子类移动（pull up , pushdown）
+        --.提取方法（Ctrl + Shift +M）
+        --.提取局部变量（Ctrl + Shift + L）
+        --.改变方法名（Ctrl + Shift +  C）
+        --.匿名类改为外部类（）
+        --.快速查看代码定义（Shift + 左键）
+        --.快速转到代码定义（Ctrl + 左键）
+        --.列出类纲要（Crtl  + O）
+        --.查看父类子类关系（Ctrl + T）
+        --.查看方法，类被谁调用（Ctrl + Alt + H）
+        --.快速定位某变量名（Ctrl + K）
+        
+三.android编码风格
+        --.目录规范 ：
+                系统目录规范：
+                               --.Requirement           ——需求相关文档
+                               --.Design                    —— 设计
+                               --.Planning & Log        ——计划、日志、会议
+                               --.Test                       ——集成测试，单元测试，测试报告，Buglist
+                               --.Study                     ——学习资料，Demo
+                               --.Deployment            ——发布、部署（publish）
+                               --.src/Source             ——源代码
+                 源代码目录规范：
+                               --.目录即包（Package）
+                               --.目录下所有类都属于此命名空间：一主类一文件
+                               --.目录层次递归
+                               --.一般系统命名空间尽量不要超过三层（组织名.项目名.模块名(java.io.DataOutput)）
+       
+       --.代码命名约定和风格：
+                常见命名规范：
+                               --.Pascal命名法 （UserName）
+                               --.Camel命名法（userName）
+                               --.匈牙利命名法（nLength）
+                               --.下划线命名法 （test_offset）
+               包命名（全部小写）
+               文件命名（Pascal）
+               类命名：
+                              --.普通类-                   Pascal（class SomeClass{ public SomeClass(){}}）
+                              --.自定义属性类 -       Pascal 后缀使用Attribute（public class BusinessAuthorAttribute 
+                                                                                                                            extends Attribute{}）
+                              --.自定义异常类-        Pascal后缀使用（public class BusinessException extends Exception{}）
+                              --.泛型中类型传递-    <K,T>
+               方法命名：动宾短语、Camel命名普通方法 （public void someClassMethod(){}）  
+               变量命名：
+                              --.私有变量： Pascal + 前缀m(private String mMyName)   
+                                                     静态成员变量（static String sMyName）
+                              --.局部变量：Camel
+                              --.方法参数：
+                              --.循环变量：i，j，k
+               
+                优化：
+                         --.局部变量： String  _StudentCount；
+                         --.方法参数： String mStudentCount；    
+                
+ 版本控制：
+        --.SVN
+                --.VisualSVN
+                --.TortoiseSVN 
+                --.操作： 
+                        --.建立server和client环境，并且checkout 版本仓库
+                        --.向版本仓库添加文件：
+                                     --.add（告诉服务器我要向版本仓库添加文件（未添加））
+                                     --.commit（向版本仓库提交上传文件）
+                        --.与上一版本比较(Diff)
+                        --.还原到以前版本（update to reversion）
+                --.SVN建立分支：（branch）
+                --.先后修改同一文件的不同地方（A先commit，B就不能再commit，而是先update之后在commit）
+                --.先后修改同一文件的相同地方（无论先后commit都会出错，但是会在update
+                                                                        时自动修改该文件，只能手动修改）
+        --.Git:
+                --.快照而不是比不同（每次只要修改一次就像照相一样保存当前修改）
+                --.几乎所有操作都在本地
+                --.3个状态（本地工作区间（通过Object文件夹存储）、临时工作区（索引通过index文件存储）、版本仓库）
+                        --.版本仓库（也是本地的）向本地工作区间checkout出工程，本地工作区间向临时存储区stage文件，临时存储区向版本仓库commit文件
+                --.生命周期（1.untracked（未跟踪）、2；5unmodified（未修改）、3.modified（已修改）、4.staged（放入仓库））
+                --安装及helloWorld（Git bash、TortoiseGit）
+                        --.环境搭建 ：
+                                --.进入本地help文档：$ git help –-web commit
+                                --.建立全局用户名：$  git cofig --global user.name "mokai"
+                                --.建立工作区间: $ mkdir git_android（建立git_android文件夹） 
+                                                                        -> $ cd git_android（切换到git_android文件夹下）
+                                                                                -> $ git init （初始化当前文件夹为git工作区间）
+                                --.添加文件：$ echo "hello" >>hello（创建一个hello 的文件）
+                                                                        -> $ git add . （向临时工作区间（index索引）添加workspace的所有文件）
+                                                                                —> $ git commit hello -m "hello commit"(向版本仓库（.git/object）提交hello文件，并且记录日志)
+                --.个体工作者：
+                        --.建立远程仓库：
+                                --.远程向本地克隆工程（相当于svn的checkout）：$ git clone https://github.com/mokai614112937/mokai_Android.git（从远程向本地copy了一个mokai_Android工程文件）
+                                        通过$ git remote -v 查看远程仓库与本地仓库的联系（origin git：//github/git/hello-world.git）
+                                --.add&&commit同上
+                                --.status 查看状态
+                                --. .gitignore（忽略不想上传的文件）($ echo "bin.dll" > .gitignore  选中要忽略的文件（bin.dll）-> $ cat .gitignore（查看要忽略的文件）之后add && commit ,bin.dll未被commit )
+                                --.diff（--staged ：比较workspace 和 staged ； --cached：比较 staged 和 local repository）
+                                --.rm（删除文件）
+                                --.mv （移动文件）
+                                --.reset（恢复到上次操作）
+                                --.log（查看版本修改日志）
+                                --.cat （查看文件内容）
+                        --.共享及更新远程仓库：
+                                --.fetch:（从远程仓库把项目拉下来并且在原有项目中新建分支）$ git  fetch origin 
+                                --.pull:（与fetch类似，但是拉下来不建立分支）
+                                --.push:（向远程仓库提交本地项目（$ git push --progress origin branchname）用TortoiseGit吧）
+                                --.remote
+                --.仓库管理员：
+                        --.分支管理和合并：
+                                --.建立分支：$ git branch branchname
+                                --.切换到新建分支: $ git checkout  branchname
+                                        （这样相同的文件同时存在于原来分支和现在分支，在新的分支下修改文件内容，不会改变原来分支下同一个文件内容）
+                                --.查看分支差异：（$ git show - branch）
+                                --.比较分支：（$ git diff branch1 branch2）
+                                --.合并分支：
+                                                --.$ git merge "merge branch1 to master" HEAD   branch1
+                                           --：合并冲突（在两个分支下对同一文件的同一个地方修改了内容）手动修改vim
+                                --.标定版本：$ git tag -a ver1.0 -m "my version1.0" （把当前所有文件标记问ver1.0）
+                                

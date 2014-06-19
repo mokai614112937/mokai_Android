@@ -1,0 +1,87 @@
+调用应用程序资源：
+        --代码中调用：this.getResources().get资源下的文件名(R.id.文件下的属性名);
+        --.资源文件之间相互调用：android:text="@资源类型/资源名称"
+        --.调用系统资源:@android:系统资源（color..）
+ manifest：
+        --.结构：
+                <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+                        package="think.android.helloandroid"
+                        android:versionCode="1"
+                        android:versionName="1.0" >
+                        <uses-sdk
+                        android:minSdkVersion="8"
+                        android:targetSdkVersion="19" />
+                        <application
+                                android:allowBackup="true"
+                                android:icon="@drawable/ic_launcher"
+                                android:label="@string/app_name"
+                                android:theme="@style/AppTheme" >
+                                <activity
+                                        android:name="think.android.helloandroid.MainActivity"
+                                        android:label="@string/app_name" >
+                                        <intent-filter>
+                                                <action android:name="android.intent.action.MAIN" />
+                                                <category android:name="android.intent.category.LAUNCHER" />
+                                        </intent-filter>
+                                </activity>
+                        </application>
+                </manifest>
+        --.文件约定：
+                --.Elements（元素）
+                        --.元素全部小写
+                        --.同级别元素顺序无关（但 Android-alais 必须放在activity后面）
+                --.Attribute（属性）
+                        --.属性可选（除了name属性）
+                        --.都是Android：前缀（manifest除外）
+               --.声明类的名称：
+                         <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+                                package="think.android.helloandroid"
+                                android:versionCode="1"
+                                android:versionName="1.0" >
+                                ....
+                                <application
+                                        ...
+                                        <activity
+                                                android:name=".类名"
+                                                android:label="@string/app_name" >
+                                                <intent-filter>
+                                                        ....
+                                                </intent-filter>
+                                        </activity>
+                                        <activity
+                                                android:name=".类名"
+                                                android:label="@string/app_name" >
+                                                <intent-filter>
+                                                        ....
+                                                </intent-filter>
+                                        </activity>
+                                </application>
+                --.多值：
+                        <intent-filter>
+                                <action android:name="android.intent.action.值名 />
+                                <action android:name="android.intent.action.值名" />
+                                <action android:name="android.intent.action.值名" />
+                                <action android:name="android.intent.action.值名" />
+                        </intent-filter>
+               --.资源引用：android:icon="@type/name"
+       Android进程生命周期：
+               --.进程等级：（等级依次降低）
+                       --.Active Process（活动进程）：（安全优先级最高-杀死Foreground需要用户响应）
+                               --.正处于Activity Resume()状态
+                               --.正处于与bound服务交互的状态
+                               --.正处于服务在前台运行的状态（startForeground()被调用）
+                               --.Service生命周期函数正在被执行（onCreate(),onStart(),onDestory()）
+                               --.BroadcastReceiver 正在执行 onReceive()方法
+                        --.Visible Process（可见进程）：
+                               --.当前进程不是焦点进程，Activity不在前端显示，但一直对用户可见（onPause()），比如弹出一个对话框
+                               --.It hosts a Service that's bound to a visible (or foreground) activity.
+                        --.Service process（服务进程）：
+                               --.一个正在运行Service（startService()）并且不属于上述两个服务的进程。
+                               --.当系统没有足够的内存时将会kill该进程
+                        --.Background process（后台进程）
+                               --.对用户不可见的Activity进程，没有与任何的Service服务相关联（onStop()），系统有个后台进程列表
+                                   一般情况下采取后进先出的原则来释放Background process资源
+                        --.Empty process（空进程）
+                               --.没有运行任何active application components，保留它主要是为了缓存的需要
+                --.退出系统应用程序：  
+                        --.System.exit(0)或 Process.killProcess(Process.myPid());

@@ -85,3 +85,40 @@
                                --.没有运行任何active application components，保留它主要是为了缓存的需要
                 --.退出系统应用程序：  
                         --.System.exit(0)或 Process.killProcess(Process.myPid());
+                        
+Activity&&Intent：
+                --.Activity定义及作用：
+                        --.Android应用程序提供交互界面的一个重要组件，也是Android最重要的组件之一。
+                        --.Activity是一个业务类，是承载应用程序的界面以及业务行为的基础。（包括UI，Service...类似于javaBean）
+                --.Intent&IntentFilter：
+                        --在不同的组件之间传递值而设计的一个数据结构
+                --.启动一个Activity过程：
+                        --.建立Activity类（a subclass of Activity ）及属性和内部方法
+                        --.在AndroidManifest.xml中注册Activity类
+                        --.在启动函数（onCreate()）中实现业务
+                                --.定义界面define the layout for the activity's user interface
+                                --.用setContentView()绑定界面
+                --.编写一个Activity类：
+                        --.创建Activity及相关视图文件Layout（view）
+                        --.配置AndroidManifest.xml文件
+                        --.重载onCreate()及绑定Activity和Layout（view）
+                                --.什么是view？
+                                --.setContentView()方法详解
+                                        --Activity 中的setContentView()实际调用->Window下的setContentView()<-PhoneWindow的setContentView()实现
+                                        --setContentView(R.layout.layout_activity1)等价于this.getWindow().setContentView(this.getLayoutInflater().inflate(R.layout.layout_activity1, null));
+                                --.Activity、Window、View三者关系
+                                        --.Activity构造时调用一个attach方法初始化一个window->通过PolicyManager.makeNewWindow(this)跟自己建立联系，
+                                           最终调用Policy类中的makeNewWindow()方法返回new PhoneWindow(context)对象
+                                        --.这个PhoneWindow有一个“ViewRoot”，其实这个“ViewRoot”是一个View或者说ViewGroup，是最初始的根视图
+                                        --.“ViewRoot”通过addView方法来一个个的添加View。
+                                --.inflater实现界面加载this.getWindow().setContentView(this.getLayoutInflater().inflate(R.layout.layout_activity1, null));
+                        --.为View（layout）添加组件
+                        --.在onCreate()中间实现初始业务逻辑
+                                --.findViewById()
+                                --.addView()
+                                //动态添加组件
+                                Button _newButton = new Button(this);
+                                _newButton.setText("newbutton");
+                                LinearLayout _linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+                                _linearLayout.addView(_newButton,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+                --.

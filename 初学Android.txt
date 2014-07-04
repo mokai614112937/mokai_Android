@@ -216,4 +216,52 @@ Activity&&Intent：
                                                         （否则报java.lang.SecurityException: Permission Denial:...无权限异常）
                                 --.startActivity机制：
                                         --.IBinder IPC进程间通信
+                
+                --.Activity生命周期：
+                        --.Activity的整个生命周期过程：
+                                --.public class ExampleActivity extends Activity {
+                                    @Override
+                                    public void onCreate(Bundle savedInstanceState) {
+                                        super.onCreate(savedInstanceState);
+                                        // The activity is being created.
+                                    }
+                                    @Override
+                                    protected void onStart() {
+                                        super.onStart();
+                                        // The activity is about to become visible.
+                                    }
+                                    @Override
+                                    protected void onResume() {
+                                        super.onResume();
+                                        // The activity has become visible (it is now "resumed").
+                                    }
+                                    @Override
+                                    protected void onPause() {
+                                        super.onPause();
+                                        // Another activity is taking focus (this activity is about to be "paused").
+                                    }
+                                    @Override
+                                    protected void onStop() {
+                                        super.onStop();
+                                        // The activity is no longer visible (it is now "stopped")
+                                    }
+                                    @Override
+                                    protected void onDestroy() {
+                                        super.onDestroy();
+                                        // The activity is about to be destroyed.
+                                    }
+                                }
+                               --.单个Activity运行顺序：
+                                       --.启动：onCreate()->onStart()->onResume()->退出：onParse()->onStop()->onDestory().
+                               --.Avtivity1调用Activity2运行顺序：
+                                       --.Activity1启动：onCreate()->onStart()->onResume()->Activity1暂停：onParse()
+                                               ->Activtiy2启动：onCreate()->onStart()->onResume()->Activity1停止：onStop()
+                                               ->然后Activity2返回到Activity1：Activity2暂停：onParse()->Activity1重新启动：onRestart()->onStart()->onResume()
+                                               ->Activity2销毁：onStop()->onDestory()
+                               --问题：onParse()弹出的对话框是指Activity的还是其他的比如Dialog，或者说弹出一个Dialog是不是新启动了一个Activity？
+                                       验证:当前Activity失去焦点是不会触发onParse()方法,Dialog不是一个Activity而是一个View控件，且弹出的新窗口必须为Activity时才能触发onParse()方法
+                                       也就是onParse()->onResume()
+                               --当按home键时该Activity触发onStop()方法，但不会触发onDestory()方法，下一次进入时onCreate()->onStart()->onResume()->...并且回到退出时的状态
+                        --.hierarchyviewer.bat
+                                --.查看应用程序层次结构
                                                                 

@@ -1,312 +1,312 @@
-调用应用程序资源：
-        --代码中调用：this.getResources().get资源下的文件名(R.id.文件下的属性名);
-        --.资源文件之间相互调用：android:text="@资源类型/资源名称"
-        --.调用系统资源:@android:系统资源（color..）
- manifest：
-        --.结构：
-                <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-                        package="think.android.helloandroid"
-                        android:versionCode="1"
-                        android:versionName="1.0" >
-                        <uses-sdk
-                        android:minSdkVersion="8"
-                        android:targetSdkVersion="19" />
-                        <application
-                                android:allowBackup="true"
-                                android:icon="@drawable/ic_launcher"
-                                android:label="@string/app_name"
-                                android:theme="@style/AppTheme" >
-                                <activity
-                                        android:name="think.android.helloandroid.MainActivity"
-                                        android:label="@string/app_name" >
-                                        <intent-filter>
-                                                <action android:name="android.intent.action.MAIN" />
-                                                <category android:name="android.intent.category.LAUNCHER" />
-                                        </intent-filter>
-                                </activity>
-                        </application>
-                </manifest>
-        --.文件约定：
-                --.Elements（元素）
-                        --.元素全部小写
-                        --.同级别元素顺序无关（但 Android-alais 必须放在activity后面）
-                --.Attribute（属性）
-                        --.属性可选（除了name属性）
-                        --.都是Android：前缀（manifest除外）
-               --.声明类的名称：
-                         <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-                                package="think.android.helloandroid"
-                                android:versionCode="1"
-                                android:versionName="1.0" >
-                                ....
-                                <application
-                                        ...
-                                        <activity
-                                                android:name=".类名"
-                                                android:label="@string/app_name" >
-                                                <intent-filter>
-                                                        ....
-                                                </intent-filter>
-                                        </activity>
-                                        <activity
-                                                android:name=".类名"
-                                                android:label="@string/app_name" >
-                                                <intent-filter>
-                                                        ....
-                                                </intent-filter>
-                                        </activity>
-                                </application>
-                --.多值：
-                        <intent-filter>
-                                <action android:name="android.intent.action.值名 />
-                                <action android:name="android.intent.action.值名" />
-                                <action android:name="android.intent.action.值名" />
-                                <action android:name="android.intent.action.值名" />
-                        </intent-filter>
-               --.资源引用：android:icon="@type/name"
+Android四大控件之Activity(&&Intent)：
+        --.Android约定
+                --调用应用程序资源：
+                        --代码中调用：this.getResources().get资源下的文件名(R.id.文件下的属性名);
+                        --.资源文件之间相互调用：android:text="@资源类型/资源名称"
+                        --.调用系统资源:@android:系统资源（color..）
+                --.manifest：
+                        --.结构：
+                                <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+                                        package="think.android.helloandroid"
+                                        android:versionCode="1"
+                                        android:versionName="1.0" >
+                                        <uses-sdk
+                                        android:minSdkVersion="8"
+                                        android:targetSdkVersion="19" />
+                                        <application
+                                                android:allowBackup="true"
+                                                android:icon="@drawable/ic_launcher"
+                                                android:label="@string/app_name"
+                                                android:theme="@style/AppTheme" >
+                                                <activity
+                                                        android:name="think.android.helloandroid.MainActivity"
+                                                        android:label="@string/app_name" >
+                                                        <intent-filter>
+                                                                <action android:name="android.intent.action.MAIN" />
+                                                                <category android:name="android.intent.category.LAUNCHER" />
+                                                        </intent-filter>
+                                                </activity>
+                                        </application>
+                                </manifest>
+                --.文件约定：
+                        --.Elements（元素）
+                                --.元素全部小写
+                                --.同级别元素顺序无关（但 Android-alais 必须放在activity后面）
+                        --.Attribute（属性）
+                                --.属性可选（除了name属性）
+                                --.都是Android：前缀（manifest除外）
+                       --.声明类的名称：
+                                 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+                                        package="think.android.helloandroid"
+                                        android:versionCode="1"
+                                        android:versionName="1.0" >
+                                        ....
+                                        <application
+                                                ...
+                                                <activity
+                                                        android:name=".类名"
+                                                        android:label="@string/app_name" >
+                                                        <intent-filter>
+                                                                ....
+                                                        </intent-filter>
+                                                </activity>
+                                                <activity
+                                                        android:name=".类名"
+                                                        android:label="@string/app_name" >
+                                                        <intent-filter>
+                                                                ....
+                                                        </intent-filter>
+                                                </activity>
+                                        </application>
+                        --.多值：
+                                <intent-filter>
+                                        <action android:name="android.intent.action.值名 />
+                                        <action android:name="android.intent.action.值名" />
+                                        <action android:name="android.intent.action.值名" />
+                                        <action android:name="android.intent.action.值名" />
+                                </intent-filter>
+                       --.资源引用：android:icon="@type/name"
                         
-                        
-Activity&&Intent：
-                --. Android进程生命周期：
-                        --.进程等级：（等级依次降低）
-                                --.Active Process（活动进程）：（安全优先级最高-杀死Foreground需要用户响应）
-                                        --.正处于Activity Resume()状态
-                                        --.正处于与bound服务交互的状态（主持了一个绑定了与用户交互活动的Service）
-                                        --.正处于服务在前台运行的状态（startForeground()被调用）
-                                        --.Service生命周期函数正在被执行（onCreate(),onStart(),onDestory()）
-                                        --.BroadcastReceiver 正在执行 onReceive()方法
-                                --.Visible Process（可见进程）：
-                                        --.当前进程不是焦点进程，Activity不在前端显示，但一直对用户可见（onPause()），比如弹出一个对话框
-                                        --.It hosts a Service that's bound to a visible (or foreground) activity.
-                                --.Service process（服务进程）：
-                                        --.一个正在运行Service（startService()）并且不属于上述两个服务的进程。
-                                        --.当系统没有足够的内存时将会kill该进程
-                                --.Background process（后台进程）
-                                        --.对用户不可见的Activity进程，没有与任何的Service服务相关联（onStop()），系统有个后台进程列表
-                                            一般情况下采取后进先出的原则来释放Background process资源
-                               --.Empty process（空进程）
-                                        --.没有运行任何active application components，保留它主要是为了缓存的需要
-                        --.退出系统应用程序：  
-                        --.System.exit(0)或 Process.killProcess(Process.myPid());
-                        
-                --.Activity定义及作用：
-                        --.Android应用程序提供交互界面的一个重要组件，也是Android最重要的组件之一。
-                        --.Intent&IntentFilter：在不同的组件之间传递值而设计的一个数据结构。
-                                --.Intent:
-                                        --.extras - 加入附加信息
-                                        --.action - 动作
-                                        --.category - intentFilter
-                                        --.data - action相关的值
-                                        --ComponentName：Context
-                        --.Activity是一个业务类，是承载应用程序的界面以及业务行为的基础。（包括UI，Service...类似于javaBean）
-                        --.启动一个Activity过程：
-                                --.建立Activity类（a subclass of Activity ）及属性和内部方法
-                                --.在AndroidManifest.xml中注册Activity类
-                                --.在启动函数（onCreate()）中实现业务
-                                        --.定义界面define the layout for the activity's user interface
-                                        --.用setContentView()绑定界面
-                        --.编写一个Activity类：
-                                --.创建Activity及相关视图文件Layout（view）
-                                --.配置AndroidManifest.xml文件
-                                --.重载onCreate()及绑定Activity和Layout（view）
-                                        --.什么是view？
-                                                --.　View类是Android的一个超类，这个类几乎包含了所有的屏幕类型。每一个View都有一个用于绘图的画布，这个画布可以进行任意扩展。
-                                        --.setContentView()方法详解
-                                                --Activity 中的setContentView()实际调用->抽象类Window下的setContentView()<-PhoneWindow的setContentView()实现
-                                                --setContentView(R.layout.layout_activity1)等价于this.getWindow().setContentView(this.getLayoutInflater().inflate(R.layout.layout_activity1, null));
-                                        --.Activity、Window、View三者关系
-                                                --.Activity构造时调用一个attach方法初始化一个window->通过PolicyManager.makeNewWindow(this)跟自己建立联系，
-                                                        最终调用Policy类中的makeNewWindow()方法返回new PhoneWindow(context)对象
-                                                --.这个PhoneWindow有一个“ViewRoot”，其实这个“ViewRoot”是一个View或者说ViewGroup，是最初始的根视图
-                                                --.“ViewRoot”通过addView方法来一个个的添加View。
-                                        --.inflater实现界面加载this.getWindow().setContentView(this.getLayoutInflater().inflate(R.layout.layout_activity1, null));
-                                --.为View（layout）添加组件
-                                --.在onCreate()中间实现初始业务逻辑
-                                        --.findViewById()
-                                        --.addView()
-                                        //动态添加组件
-                                        Button _newButton = new Button(this);
-                                        _newButton.setText("newbutton");
-                                        LinearLayout _linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
-                                        _linearLayout.addView(_newButton,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-                                --.事件监听：
-                                        //动态修改组件属性
-                                        Button _button = (Button)findViewById(R.id.button1);
-                                        _button.setText("button");
-                                        //事件主题，事件对象
-                                        //监听函数设置
-                                        //逻辑代码编写
-                                        _button.setOnClickListener(new OnClickListener() {	
-                                                @Override
-                                                public void onClick(View v) {
-                                                        //（Toast）弹出对话框
-                                                        //Activity1.this--在Activity环境下弹出对话框
-                                                        //"button clicked!"弹出对话框显示内容
-                                                        //弹出对话框显示事件300ms
-                                                        Log.i("mokai","button clicked!");
-                                                        Toast.makeText(Activity1.this, "button clicked!", 3000).show();;
-                                                }
-                                        });
-                                --.Activity切换及值传递：
-                                        --.启动一个新Activity
-                                                --.Intent intent = new Intent(this, SignInActivity.class);
-                                                    startActivity(intent);
-                                        --.启动一个新Activity并互相传值（Activity1 向 Activity2 传值）
-                                                --. 向新Activity传值：
-                                                        --.在Activity1通过intent.putExtra()放入要传值的key和value：
-                                                                Intent _intent = new Intent(JackActivity.this,RoseActivity.class);
-                                                                _intent.putExtra("mokai.key", "hello,Rose!");
-                                                                startActivity(_intent);
-                                                        --.在Activity2中通过getIntent.getExtra().get(Key)方法获取传入的value。
-                                                                if(this.getIntent() != null){
-                                                                        String _jackMessage  = (String) this.getIntent().getExtras().get("mokai.key");
-                                                                        Toast.makeText(this, _jackMessage, Toast.LENGTH_SHORT).show();
-                                                                } 
-                                                        --.Activity1向Activity2传值，然后得到Activity1传来的值：
-                                                                --.通过startActiForResult()启动一个新Activity，并设置一个requestCode（请求编码）
-                                                                       Intent _intent = new Intent(JackActivity.this,RoseActivity.class);
-                                                                       _intent.putExtra("mokai.key", "hello,Rose!");
-                                                                       startActivityForResult(_intent, 1234);
-                                                               -Activity2接收Activity1传过来的值（同上），然后Activity2通过setResult(int resultCode, Intent data)方法设置返回值
-                                                                       mIntent.putExtra("mokai.key2", "hello,jack!");
-                                                                       setResult(4321, mIntent);//向向该Activity传值的Activity返回值
-                                                                       finish();//关闭一个Activity
-                                                              --.Activity1接收Activity2返回来的值
-                                                                       重载onActivityResult(int requestCode, int resultCode, Intent data)方法得到Activity2返回的值
-                                                                       if(resultCode == 4321){
-                                                                                String _resultValue = (String)data.getExtras().get("mokai.rose.key");
-                                                                                Log.i("mokai.android.activityDome",_resultValue);
-                                                                                Toast.makeText(JackActivity.this, _resultValue, Toast.LENGTH_LONG).show();
-                                                                       }
-                                        --.通过Intent-filter启动指定的Activity
-                                                --.在AndroidManifest.xml中：
-                                                        <activity android:name=".RoseActivity">  
-                                                                <intent-filter >
-                                                                        <!-- 同时满足三个filter条件就调用此Activity -->
-                                                                        <!--自定义action -->
-                                                                        <action android:name="mokai.intent.activitydemo.WATCHMOVIE"/>
-                                                                        <!-- 系统默认category，若不写会报ActivityNotFound异常 -->
-                                                                        <category android:name="android.intent.category.DEFAULT"/>
-                                                                        <!-- 数据匹配以http开头的dataURI -->
-                                                                        <data android:scheme="http"/>
-                                                             </intent-filter>     
-                                                        </activity>
-                                                --.在Activity1中:
-                                                         Intent _intent = new Intent(JackActivity.this,RoseActivity.class);
-                                                         改为
-                                                         Intent _intent = new Intent();
-                                                         //通过setAction()方法传入filter中自定义的action
-                                                         _intent.setAction("mokai.intent.activitydemo.WATCHMOVIE");
-                                                        //通过setData()设置URI数据
-                                                        _intent.setData(Uri.parse("http:/www.baidu.com"));
-                                        --.调用系统Activity(拨号、发邮件...)
-                                                Intent _intent2 = new Intent();
-                                                //通过setAction()方法传入系统Action
-                                                _intent2.setAction(Intent.ACTION_DIAL);
-                                                Log.i("mokai.activitydemmo.intent","调用系统拨号程序！");
-                                                //通过setData()方法传入号码(tel是系统默认URI前缀，必须加上)
-                                                _intent2.setData(Uri.parse("tel:18728386894"));
-                                                startActivity(_intent2);
-                                        --.ACTION_DIAL与ACTION_CALL区别：
-                                                --.ACTION_DIAL    拨打一个指定的号码，显示一个带有号码的用户界面，允许用户去启动呼叫
-                                                --.ACTION_CALL  根据指定的数据执行一次呼叫
-                                                --.ACTION_CALL不能用在紧急呼叫上，紧急呼叫可以用ACTION_DIAL来实现
-                                                --使用ACTION_CALL时需在AndroidManifest里面加上
-                                                        <uses-permission android:name="android.permission.CALL_PHONE"/>
-                                                        （否则报java.lang.SecurityException: Permission Denial:...无权限异常）
-                                --.startActivity机制：
-                                        --.IBinder IPC进程间通信
+        --. Android进程生命周期：
+                --.进程等级：（等级依次降低）
+                        --.Active Process（活动进程）：（安全优先级最高-杀死Foreground需要用户响应）
+                                --.正处于Activity Resume()状态
+                                --.正处于与bound服务交互的状态（主持了一个绑定了与用户交互活动的Service）
+                                --.正处于服务在前台运行的状态（startForeground()被调用）
+                                --.Service生命周期函数正在被执行（onCreate(),onStart(),onDestory()）
+                                --.BroadcastReceiver 正在执行 onReceive()方法
+                        --.Visible Process（可见进程）：
+                                --.当前进程不是焦点进程，Activity不在前端显示，但一直对用户可见（onPause()），比如弹出一个对话框
+                                --.It hosts a Service that's bound to a visible (or foreground) activity.
+                        --.Service process（服务进程）：
+                                --.一个正在运行Service（startService()）并且不属于上述两个服务的进程。
+                                --.当系统没有足够的内存时将会kill该进程
+                        --.Background process（后台进程）
+                                --.对用户不可见的Activity进程，没有与任何的Service服务相关联（onStop()），系统有个后台进程列表
+                                    一般情况下采取后进先出的原则来释放Background process资源
+                       --.Empty process（空进程）
+                                --.没有运行任何active application components，保留它主要是为了缓存的需要
+                --.退出系统应用程序：  
+                --.System.exit(0)或 Process.killProcess(Process.myPid());
                 
-                --.Activity生命周期：
-                        --.Activity的整个生命周期过程：
-                                --.public class ExampleActivity extends Activity {
-                                    @Override
-                                    public void onCreate(Bundle savedInstanceState) {
-                                        super.onCreate(savedInstanceState);
-                                        // The activity is being created.
-                                    }
-                                    @Override
-                                    protected void onStart() {
-                                        super.onStart();
-                                        // The activity is about to become visible.
-                                    }
-                                    @Override
-                                    protected void onResume() {
-                                        super.onResume();
-                                        // The activity has become visible (it is now "resumed").
-                                    }
-                                    @Override
-                                    protected void onPause() {
-                                        super.onPause();
-                                        // Another activity is taking focus (this activity is about to be "paused").
-                                    }
-                                    @Override
-                                    protected void onStop() {
-                                        super.onStop();
-                                        // The activity is no longer visible (it is now "stopped")
-                                    }
-                                    @Override
-                                    protected void onDestroy() {
-                                        super.onDestroy();
-                                        // The activity is about to be destroyed.
-                                    }
-                                }
-                               --.单个Activity运行顺序：
-                                       --.启动：onCreate()->onStart()->onResume()->退出：onParse()->onStop()->onDestory().
-                               --.Avtivity1调用Activity2运行顺序：
-                                       --.Activity1启动：onCreate()->onStart()->onResume()->Activity1暂停：onParse()
-                                               ->Activtiy2启动：onCreate()->onStart()->onResume()->Activity1停止：onStop()
-                                               ->然后Activity2返回到Activity1：Activity2暂停：onParse()->Activity1重新启动：onRestart()->onStart()->onResume()
-                                               ->Activity2销毁：onStop()->onDestory()
-                               --问题：onParse()弹出的对话框是指Activity的还是其他的比如Dialog，或者说弹出一个Dialog是不是新启动了一个Activity？
-                                       验证:当前Activity失去焦点是不会触发onParse()方法,Dialog不是一个Activity而是一个View控件，且弹出的新窗口必须为Activity时才能触发onParse()方法
-                                       也就是onParse()->onResume()
-                               --当按home键时该Activity触发onStop()方法，但不会触发onDestory()方法，下一次进入时onCreate()->onStart()->onResume()->...并且回到退出时的状态
-                        --.hierarchyviewer.bat
-                                --.查看应用程序层次结构
-                --.存储Activity状态：
-                        --.onCreate()、onSaveInstanceState()、onRestoreInstanceState()来进行状态的保存和恢复
-                        --.重写Activity中的onSaveInstanceState(Bundle outState)和onRestoreInstanceState(Bundle savedInstanceState)方法.
-                                --.步骤为：（1）在离开页面的时候用onSaveInstanceState()中的outState可以保存你所需要的值
-                                                   （2）在重新回到该页面的时候可以使用onRestoreInstanceState()从saveInstanceState中获取保存过得值来重新初始化界面。
-                               --.onSaveInstanceState()是在onStop()之前执行，onRestoreInstanceState在onStart()后执行，因此如果是Activity销毁过后的话再启动数据就没有保存了，
-                                  即在finish()或用户按下Back后，该功能就失效了。一般用在当前Activity被其他Activity覆盖和按Home键后重新进入该Activity的时候。
-                        --.解决系统的onRestoreInstanceState()方法优先保存程序之前的状态来覆盖程序修改之后的状态
-                        --.注释掉onSaveInstanceState()方法里面的super.onSaveInstanceState(outState)使系统
-                            不在调用父类的onSaveInstanceState()方法,而直接执行onSaveInstanceState()方法体里面的内容。
-                            
-                --.配置改变(横屏竖屏切换、系统语言改变...)（貌似要在真机上才能实现）
-                        --.重写onConfigurationChanged(Configuration newConfig)方法
-                        --.在AndroidManifest.xml中指定的Activity中添加 android:configChanges="config名称(orientation)"
-                        
-                --.Activity任务栈
-                        --.task:一组以栈的模式聚集在一起的Activity组件集合，它们有潜在的前后驱关联，新加入的Activity组件，位于栈顶，
-                                   并仅有在栈顶的Activity，才会有机会与用户进行交互。而当栈顶的 Activity完成使命退出的时候，Task会将其退栈，
-                                   并让下一个将跑到栈顶的Activity来于用户面对面，直至栈中再无更多 Activity，Task结束
-                        --.taskcase:设计Activity1和Activity2：各自里面两个button，在Activity1中button1启动Activity1，button2启动Activity2；
-                                        Activity2中button1启动Activity2，button2启动Activity1，log跟踪他们的task情况
-                                        
-                --.AndroidManifest.xml中activity属性详解
-                        --.LaunchMode(启动模式)
-                                --.标准模式
-                                        --.从task中启动Activity时，该Activity的新实例总是在当前task中创建
-                                        --.每次启动Activity，都会创建该Activity类的新实例
-                                        --.一个task中可以存在同一Activity的多个实例
-                                        --.一个Activity的多个实例可以出现在多个task栈中
-                                --.singleTop
-                                        --.如果启动模式设置为singleTop的Activity实例未处于栈顶，则其表现与启动模式设置为standard的Activity的表现一致
-                                        --.如果启动模式设置为singleTop的Activity的实例位于任务栈的栈顶则不会创建该Activity的新实例。
-                                           只是调用位于栈顶的该Activity实例的onNewIntent方法，将新的intent传递给该实例。  
-                                --.singleTask
-                                        --.设置为singleTask的Activity，具有全局唯一性，在Android系统中只能创建该Activity的一个实例。
-                                        --.如果启动时设置为singleTask的Activity时，已经存在该Activity的 实例，则将该实例之上的所有Activity实例destory掉，
-                                           将该实例重新带回到栈顶，并调用器onNewIntent方法，将新的intent传递给该实例
-                                        --.在创建设置为singleTask模式的Activity的实例时，如果当前task的taskAffinity与该Activity的taskAffinity一致，则
-                                           直接在当前task中创建;如果当前task的taskAffinity值与该Activity的taskAffinity不一致则在新的任务中创建该Activity
-                                           的实例。
-                                --.singleInstance
-                                        --.当创建设置为singleInstance模式的Activity时，总是在新的任务中创建
-                                        --.设置为SingleInstance模式的Activity，具有全局唯一性。在Android系统中只能存在该Activity的一个实例
-                                        --.设置为singleInstance模式的Activity，总是单独在一个task中存在也就是说在该Activity所在的task栈中不可能存在其他的activity
-                        --.其他的查官方文档：http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
-                                网上博客：http://blog.csdn.net/think_soft/article/details/7546150
+        --.Activity定义及作用：
+                --.Android应用程序提供交互界面的一个重要组件，也是Android最重要的组件之一。
+                --.Intent&IntentFilter：在不同的组件之间传递值而设计的一个数据结构。
+                        --.Intent:
+                                --.extras - 加入附加信息
+                                --.action - 动作
+                                --.category - intentFilter
+                                --.data - action相关的值
+                                --ComponentName：Context
+                --.Activity是一个业务类，是承载应用程序的界面以及业务行为的基础。（包括UI，Service...类似于javaBean）
+                --.启动一个Activity过程：
+                        --.建立Activity类（a subclass of Activity ）及属性和内部方法
+                        --.在AndroidManifest.xml中注册Activity类
+                        --.在启动函数（onCreate()）中实现业务
+                                --.定义界面define the layout for the activity's user interface
+                                --.用setContentView()绑定界面
+                --.编写一个Activity类：
+                        --.创建Activity及相关视图文件Layout（view）
+                        --.配置AndroidManifest.xml文件
+                        --.重载onCreate()及绑定Activity和Layout（view）
+                                --.什么是view？
+                                        --.　View类是Android的一个超类，这个类几乎包含了所有的屏幕类型。每一个View都有一个用于绘图的画布，这个画布可以进行任意扩展。
+                                --.setContentView()方法详解
+                                        --Activity 中的setContentView()实际调用->抽象类Window下的setContentView()<-PhoneWindow的setContentView()实现
+                                        --setContentView(R.layout.layout_activity1)等价于this.getWindow().setContentView(this.getLayoutInflater().inflate(R.layout.layout_activity1, null));
+                                --.Activity、Window、View三者关系
+                                        --.Activity构造时调用一个attach方法初始化一个window->通过PolicyManager.makeNewWindow(this)跟自己建立联系，
+                                                最终调用Policy类中的makeNewWindow()方法返回new PhoneWindow(context)对象
+                                        --.这个PhoneWindow有一个“ViewRoot”，其实这个“ViewRoot”是一个View或者说ViewGroup，是最初始的根视图
+                                        --.“ViewRoot”通过addView方法来一个个的添加View。
+                                --.inflater实现界面加载this.getWindow().setContentView(this.getLayoutInflater().inflate(R.layout.layout_activity1, null));
+                        --.为View（layout）添加组件
+                        --.在onCreate()中间实现初始业务逻辑
+                                --.findViewById()
+                                --.addView()
+                                //动态添加组件
+                                Button _newButton = new Button(this);
+                                _newButton.setText("newbutton");
+                                LinearLayout _linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+                                _linearLayout.addView(_newButton,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+                        --.事件监听：
+                                //动态修改组件属性
+                                Button _button = (Button)findViewById(R.id.button1);
+                                _button.setText("button");
+                                //事件主题，事件对象
+                                //监听函数设置
+                                //逻辑代码编写
+                                _button.setOnClickListener(new OnClickListener() {	
+                                        @Override
+                                        public void onClick(View v) {
+                                                //（Toast）弹出对话框
+                                                //Activity1.this--在Activity环境下弹出对话框
+                                                //"button clicked!"弹出对话框显示内容
+                                                //弹出对话框显示事件300ms
+                                                Log.i("mokai","button clicked!");
+                                                Toast.makeText(Activity1.this, "button clicked!", 3000).show();;
+                                        }
+                                });
+                        --.Activity切换及值传递：
+                                --.启动一个新Activity
+                                        --.Intent intent = new Intent(this, SignInActivity.class);
+                                            startActivity(intent);
+                                --.启动一个新Activity并互相传值（Activity1 向 Activity2 传值）
+                                        --. 向新Activity传值：
+                                                --.在Activity1通过intent.putExtra()放入要传值的key和value：
+                                                        Intent _intent = new Intent(JackActivity.this,RoseActivity.class);
+                                                        _intent.putExtra("mokai.key", "hello,Rose!");
+                                                        startActivity(_intent);
+                                                --.在Activity2中通过getIntent.getExtra().get(Key)方法获取传入的value。
+                                                        if(this.getIntent() != null){
+                                                                String _jackMessage  = (String) this.getIntent().getExtras().get("mokai.key");
+                                                                Toast.makeText(this, _jackMessage, Toast.LENGTH_SHORT).show();
+                                                        } 
+                                                --.Activity1向Activity2传值，然后得到Activity1传来的值：
+                                                        --.通过startActiForResult()启动一个新Activity，并设置一个requestCode（请求编码）
+                                                               Intent _intent = new Intent(JackActivity.this,RoseActivity.class);
+                                                               _intent.putExtra("mokai.key", "hello,Rose!");
+                                                               startActivityForResult(_intent, 1234);
+                                                       -Activity2接收Activity1传过来的值（同上），然后Activity2通过setResult(int resultCode, Intent data)方法设置返回值
+                                                               mIntent.putExtra("mokai.key2", "hello,jack!");
+                                                               setResult(4321, mIntent);//向向该Activity传值的Activity返回值
+                                                               finish();//关闭一个Activity
+                                                      --.Activity1接收Activity2返回来的值
+                                                               重载onActivityResult(int requestCode, int resultCode, Intent data)方法得到Activity2返回的值
+                                                               if(resultCode == 4321){
+                                                                        String _resultValue = (String)data.getExtras().get("mokai.rose.key");
+                                                                        Log.i("mokai.android.activityDome",_resultValue);
+                                                                        Toast.makeText(JackActivity.this, _resultValue, Toast.LENGTH_LONG).show();
+                                                               }
+                                --.通过Intent-filter启动指定的Activity
+                                        --.在AndroidManifest.xml中：
+                                                <activity android:name=".RoseActivity">  
+                                                        <intent-filter >
+                                                                <!-- 同时满足三个filter条件就调用此Activity -->
+                                                                <!--自定义action -->
+                                                                <action android:name="mokai.intent.activitydemo.WATCHMOVIE"/>
+                                                                <!-- 系统默认category，若不写会报ActivityNotFound异常 -->
+                                                                <category android:name="android.intent.category.DEFAULT"/>
+                                                                <!-- 数据匹配以http开头的dataURI -->
+                                                                <data android:scheme="http"/>
+                                                     </intent-filter>     
+                                                </activity>
+                                        --.在Activity1中:
+                                                 Intent _intent = new Intent(JackActivity.this,RoseActivity.class);
+                                                 改为
+                                                 Intent _intent = new Intent();
+                                                 //通过setAction()方法传入filter中自定义的action
+                                                 _intent.setAction("mokai.intent.activitydemo.WATCHMOVIE");
+                                                //通过setData()设置URI数据
+                                                _intent.setData(Uri.parse("http:/www.baidu.com"));
+                                --.调用系统Activity(拨号、发邮件...)
+                                        Intent _intent2 = new Intent();
+                                        //通过setAction()方法传入系统Action
+                                        _intent2.setAction(Intent.ACTION_DIAL);
+                                        Log.i("mokai.activitydemmo.intent","调用系统拨号程序！");
+                                        //通过setData()方法传入号码(tel是系统默认URI前缀，必须加上)
+                                        _intent2.setData(Uri.parse("tel:18728386894"));
+                                        startActivity(_intent2);
+                                --.ACTION_DIAL与ACTION_CALL区别：
+                                        --.ACTION_DIAL    拨打一个指定的号码，显示一个带有号码的用户界面，允许用户去启动呼叫
+                                        --.ACTION_CALL  根据指定的数据执行一次呼叫
+                                        --.ACTION_CALL不能用在紧急呼叫上，紧急呼叫可以用ACTION_DIAL来实现
+                                        --使用ACTION_CALL时需在AndroidManifest里面加上
+                                                <uses-permission android:name="android.permission.CALL_PHONE"/>
+                                                （否则报java.lang.SecurityException: Permission Denial:...无权限异常）
+                        --.startActivity机制：
+                                --.IBinder IPC进程间通信
+        
+        --.Activity生命周期：
+                --.Activity的整个生命周期过程：
+                        --.public class ExampleActivity extends Activity {
+                            @Override
+                            public void onCreate(Bundle savedInstanceState) {
+                                super.onCreate(savedInstanceState);
+                                // The activity is being created.
+                            }
+                            @Override
+                            protected void onStart() {
+                                super.onStart();
+                                // The activity is about to become visible.
+                            }
+                            @Override
+                            protected void onResume() {
+                                super.onResume();
+                                // The activity has become visible (it is now "resumed").
+                            }
+                            @Override
+                            protected void onPause() {
+                                super.onPause();
+                                // Another activity is taking focus (this activity is about to be "paused").
+                            }
+                            @Override
+                            protected void onStop() {
+                                super.onStop();
+                                // The activity is no longer visible (it is now "stopped")
+                            }
+                            @Override
+                            protected void onDestroy() {
+                                super.onDestroy();
+                                // The activity is about to be destroyed.
+                            }
+                        }
+                       --.单个Activity运行顺序：
+                               --.启动：onCreate()->onStart()->onResume()->退出：onParse()->onStop()->onDestory().
+                       --.Avtivity1调用Activity2运行顺序：
+                               --.Activity1启动：onCreate()->onStart()->onResume()->Activity1暂停：onParse()
+                                       ->Activtiy2启动：onCreate()->onStart()->onResume()->Activity1停止：onStop()
+                                       ->然后Activity2返回到Activity1：Activity2暂停：onParse()->Activity1重新启动：onRestart()->onStart()->onResume()
+                                       ->Activity2销毁：onStop()->onDestory()
+                       --问题：onParse()弹出的对话框是指Activity的还是其他的比如Dialog，或者说弹出一个Dialog是不是新启动了一个Activity？
+                               验证:当前Activity失去焦点是不会触发onParse()方法,Dialog不是一个Activity而是一个View控件，且弹出的新窗口必须为Activity时才能触发onParse()方法
+                               也就是onParse()->onResume()
+                       --当按home键时该Activity触发onStop()方法，但不会触发onDestory()方法，下一次进入时onCreate()->onStart()->onResume()->...并且回到退出时的状态
+                --.hierarchyviewer.bat
+                        --.查看应用程序层次结构
+        --.存储Activity状态：
+                --.onCreate()、onSaveInstanceState()、onRestoreInstanceState()来进行状态的保存和恢复
+                --.重写Activity中的onSaveInstanceState(Bundle outState)和onRestoreInstanceState(Bundle savedInstanceState)方法.
+                        --.步骤为：（1）在离开页面的时候用onSaveInstanceState()中的outState可以保存你所需要的值
+                                           （2）在重新回到该页面的时候可以使用onRestoreInstanceState()从saveInstanceState中获取保存过得值来重新初始化界面。
+                       --.onSaveInstanceState()是在onStop()之前执行，onRestoreInstanceState在onStart()后执行，因此如果是Activity销毁过后的话再启动数据就没有保存了，
+                          即在finish()或用户按下Back后，该功能就失效了。一般用在当前Activity被其他Activity覆盖和按Home键后重新进入该Activity的时候。
+                --.解决系统的onRestoreInstanceState()方法优先保存程序之前的状态来覆盖程序修改之后的状态
+                --.注释掉onSaveInstanceState()方法里面的super.onSaveInstanceState(outState)使系统
+                    不在调用父类的onSaveInstanceState()方法,而直接执行onSaveInstanceState()方法体里面的内容。
+                    
+        --.配置改变(横屏竖屏切换、系统语言改变...)（貌似要在真机上才能实现）
+                --.重写onConfigurationChanged(Configuration newConfig)方法
+                --.在AndroidManifest.xml中指定的Activity中添加 android:configChanges="config名称(orientation)"
+                
+        --.Activity任务栈
+                --.task:一组以栈的模式聚集在一起的Activity组件集合，它们有潜在的前后驱关联，新加入的Activity组件，位于栈顶，
+                           并仅有在栈顶的Activity，才会有机会与用户进行交互。而当栈顶的 Activity完成使命退出的时候，Task会将其退栈，
+                           并让下一个将跑到栈顶的Activity来于用户面对面，直至栈中再无更多 Activity，Task结束
+                --.taskcase:设计Activity1和Activity2：各自里面两个button，在Activity1中button1启动Activity1，button2启动Activity2；
+                                Activity2中button1启动Activity2，button2启动Activity1，log跟踪他们的task情况
+                                
+        --.AndroidManifest.xml中activity属性详解
+                --.LaunchMode(启动模式)
+                        --.标准模式
+                                --.从task中启动Activity时，该Activity的新实例总是在当前task中创建
+                                --.每次启动Activity，都会创建该Activity类的新实例
+                                --.一个task中可以存在同一Activity的多个实例
+                                --.一个Activity的多个实例可以出现在多个task栈中
+                        --.singleTop
+                                --.如果启动模式设置为singleTop的Activity实例未处于栈顶，则其表现与启动模式设置为standard的Activity的表现一致
+                                --.如果启动模式设置为singleTop的Activity的实例位于任务栈的栈顶则不会创建该Activity的新实例。
+                                   只是调用位于栈顶的该Activity实例的onNewIntent方法，将新的intent传递给该实例。  
+                        --.singleTask
+                                --.设置为singleTask的Activity，具有全局唯一性，在Android系统中只能创建该Activity的一个实例。
+                                --.如果启动时设置为singleTask的Activity时，已经存在该Activity的 实例，则将该实例之上的所有Activity实例destory掉，
+                                   将该实例重新带回到栈顶，并调用器onNewIntent方法，将新的intent传递给该实例
+                                --.在创建设置为singleTask模式的Activity的实例时，如果当前task的taskAffinity与该Activity的taskAffinity一致，则
+                                   直接在当前task中创建;如果当前task的taskAffinity值与该Activity的taskAffinity不一致则在新的任务中创建该Activity
+                                   的实例。
+                        --.singleInstance
+                                --.当创建设置为singleInstance模式的Activity时，总是在新的任务中创建
+                                --.设置为SingleInstance模式的Activity，具有全局唯一性。在Android系统中只能存在该Activity的一个实例
+                                --.设置为singleInstance模式的Activity，总是单独在一个task中存在也就是说在该Activity所在的task栈中不可能存在其他的activity
+                --.其他的查官方文档：http://developer.android.com/guide/topics/manifest/activity-element.html#lmode
+                        网上博客：http://blog.csdn.net/think_soft/article/details/7546150

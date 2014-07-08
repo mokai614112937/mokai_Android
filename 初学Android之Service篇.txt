@@ -1,0 +1,39 @@
+Android四大控件之Service：
+        --.Service定义：一个能在后台长时间运行并且不提供用户接口的应用组件。
+                                它可以运行在它自己的进程,也可以运行在其他应用程序进程的上下文（context）里面，这取决于自身的需要。
+                                其它的组件可以绑定到一个服务（Service）上面，通过远程过程调用（RPC）来调用这个方法。
+                                例如 媒体播放器的服务，当用户退出媒体选择用户界面，仍然希望音乐依然可以继续播放，这时就是由服务（service）来保证当用户界面关闭时音乐继续播放的。
+        --.服务的运行状态：
+                --.启动服务后，按Home键，服务仍在运行.
+                --.启动服务后，stop进程，服务便不再运行.
+                --.服务通常应该使用，不然用户界面会阻塞.
+                --.服务不是一个新的进程或线程，而是与当前进程或线程绑定的.
+        --.Service分类：
+                --.启动方式：
+                        --.Started Service:
+                                --.通过startService()启动
+                                --.一旦启动，就运行在后台，即便启动它的Activity已经被销毁
+                                --.通常只启动，不返回值
+                                --.通常网络上传或下载操作完成后，自动停止
+                                --.用到onStartCommand()方法
+                        --.Bound Service:
+                                --.通过bindService()绑定
+                                --.提供客户端服务器接口来启动
+                                --.发送请求，得到返回值，甚至通过IPC（内部进程通讯）来通信
+                                --.一个服务可以被多个调用者调用，只要有一个绑定者，服务就一直运行；所有绑定者退出了，服务才退出
+                                --.用到onBind()方法
+                --.服务性质：（不同的进程之间，若A调用B，则A可以视为client，B可以视为serve）
+                        --.Local Service:
+                        --.Remote Service:
+                --.实现方法：
+                        --.Java Service
+                        --.Native Service（原生服务（C++系统级服务））
+        --.Service生命周期：
+                --.Call to startService()-->onCreate()-->onStartCommand()--> Service running-->onDestory()-->Service shutDown
+                --.Call to bindService()-->onCreate()-->onBind()-->Client are bound to service -->onUnbind()-->onDestory()-->Service shutDown
+        --创建及使用Service步骤：
+                --.继承Service类实现自己的服务
+                --.在AndroidManifest.xml中注册服务
+                --.启动服务startService()
+                --.停止服务stopService()或stopSelf()
+        

@@ -77,7 +77,7 @@
                          --.局部变量： String  _StudentCount；
                          --.方法参数： String mStudentCount；    
                 
- 版本控制：
+版本控制：
         --.SVN
                 --.VisualSVN
                 --.TortoiseSVN 
@@ -137,6 +137,7 @@
                                                 --.$ git merge "merge branch1 to master" HEAD   branch1
                                            --：合并冲突（在两个分支下对同一文件的同一个地方修改了内容）手动修改vim
                                 --.标定版本：$ git tag -a ver1.0 -m "my version1.0" （把当前所有文件标记问ver1.0）
+                                
    SVN 与 Git 区别：
                 --.概念和特性：
                         --. SVN                                                               | Git

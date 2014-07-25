@@ -36,4 +36,30 @@ Android四大控件之Service：
                 --.在AndroidManifest.xml中注册服务
                 --.启动服务startService()
                 --.停止服务stopService()或stopSelf()
-        
+                --.IntentServce(继承Service)
+                       --.IntentService是继承于Service并处理异步请求的一个类，在IntentService内有一个工作线程来处理耗时操作，启动IntentService的方式和启动传统Service一样，
+                          同时，当任务执行完后，IntentService会自动停止，而不需要我们去手动控制。另外，可以启动IntentService多次，而每一个耗时操作会以工作队列的方式
+                          在IntentService的onHandleIntent回调方法中执行，并且，每次只会执行一个工作线程，执行完第一个再执行第二个，以此类推。所有请求都在一个单线程中，
+                          不会阻塞应用程序的主线程（UI Thread），同一时间只处理一个请求。
+        --.绑定及使用BoundService的步骤：
+                --.local BoundService(本地服务绑定)
+                        --.继承Service或IntentService类实现自己服务
+                        --.在AndroidManifest.xml中注册服务
+                        --.绑定服务bindService()
+                        --.取消绑定服务unbindService()
+        --.startService和BoundService区别：   
+              --.服务不能自己运行，需要通过调用Context.startService()或Context.bindService()方法启动服务。
+                 这两个方法都可以启动Service，但是它们的使用场合有所不同。使用startService()方法启用
+                 服务，调用者与服务之间没有关连，即使调用者退出了，服务仍然运行。使用bindService()
+                 方法启用服务，调用者与服务绑定在了一起，调用者一旦退出，服务也就终止，大有“不求
+                 同时生，必须同时死”的 特点。
+              --.如果打算采用Context.startService()方法启动服务，在服务未被创建时，系统会先调用服务的
+                 onCreate()方法，接着调用onStart()方法。如果调用startService()方法前服务已经被创建，多次
+                 调用startService()方法并不会导致多次创建服务，但会导致多次调用onStart()方法。采用startService()
+                 方法启动的服务，只能调用Context.stopService()方法结束服务，服务结束时会调用onDestroy()方法。
+              --.如果打算采用Context.bindService()方法启动服务，在服务未被创建时，系统会先调用服务的
+                 onCreate()方法，接着调用onBind()方法。这个时候调用者和服务绑定在一起，调用者退出
+                了，系统就会先调用服务的onUnbind()方法，接着调用onDestroy()方法。如果调用bindService()
+                方法前服务已经被绑定，多次调用bindService()方法并不会导致多次创建服务及绑定(也就是说
+                onCreate()和onBind()方法并不会被多次调用)。如果调用者希望与正在绑定的服务解除绑定，
+                可以调用unbindService()方法，调用该方法也会导致系统调用服务的onUnbind()-->onDestroy()方法。
